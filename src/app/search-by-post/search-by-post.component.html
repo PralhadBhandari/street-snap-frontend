@@ -1,0 +1,88 @@
+<!-- Main Container with mobile-first approach -->
+<div class="w-full min-h-screen ml-[20vw] m-0">
+  <div class="w-full bg-white shadow-xl rounded-xl border border-gray-100 overflow-hidden">
+    <!-- Search Form -->
+    <div class="p-6 bg-gray-50 border-b border-gray-200">
+      <form [formGroup]="searchForm" class="flex flex-col gap-4">
+        <!-- Search Input -->
+        <div class="w-full">
+          <input
+            type="text"
+            formControlName="searchTerm"
+            placeholder="Search for posts..."
+            class="w-full px-5 py-3 text-base border border-gray-200 rounded-xl 
+                   outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                   transition-all duration-300 placeholder:text-gray-400 
+                   hover:border-gray-300"
+          />
+        </div>
+
+        <!-- Filter Options -->
+        <div class="w-full">
+          <select
+            formControlName="selectedFilter"
+            class="w-full px-5 py-3 text-base border border-gray-200 rounded-xl
+                   outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                   transition-all duration-300 bg-white text-gray-700 
+                   hover:border-gray-300"
+          >
+            <option value="" disabled selected>Filter By</option>
+            <option value="address">Address</option>
+            <option value="username">Username</option>
+            <option value="caption">Caption</option>
+          </select>
+        </div>
+      </form>
+    </div>
+
+    <!-- Posts List -->
+    <div class="bg-white">
+      <!-- No Results Message -->
+      <div *ngIf="filteredPosts.length === 0" 
+           class="p-8 text-center text-gray-500 text-lg">
+        No posts found matching your search.
+      </div>
+
+      <!-- Posts -->
+      <div *ngFor="let post of filteredPosts" 
+           class="border-b border-gray-100 last:border-b-0 hover:bg-gray-50 
+                  transition-all duration-200">
+        <div class="p-6 sm:p-8 flex flex-col sm:flex-row gap-6 sm:gap-8">
+          <!-- Post Image -->
+          <div class="sm:w-32 sm:h-32 w-full h-48 flex-shrink-0">
+            <img 
+              [src]="post.postMedia" 
+              alt="Post Media" 
+              class="w-full h-full object-cover rounded-lg shadow-sm"
+            />
+          </div>
+
+          <!-- Post Content -->
+          <div class="flex-grow space-y-3">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+              <h3 class="font-semibold text-xl text-gray-800">{{ post.user.username }}</h3>
+              <span class="text-sm text-gray-600">
+                {{ post[searchForm.value.selectedFilter] }}
+              </span>
+            </div>
+
+            <p class="text-sm text-gray-700 line-clamp-2">{{ post.caption }}</p>
+            <p class="text-xs text-gray-500">{{ post.address }}</p>
+
+            <!-- Map Button - Full width on mobile, auto width on desktop -->
+            <button 
+              (click)="generateMap(post)" 
+              class="w-full sm:w-auto mt-4 sm:mt-0 bg-blue-500 text-white px-6 py-2.5 
+                     rounded-xl hover:bg-blue-600 transition duration-200 
+                     flex items-center justify-center gap-2 text-sm font-semibold
+                     shadow-sm hover:shadow-md"
+            >
+              <i class="fas fa-map-marker-alt"></i>
+              View in Map
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

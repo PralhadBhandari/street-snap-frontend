@@ -1,0 +1,80 @@
+<!-- Sidebar -->
+<aside style="height: 100%;"
+  class="fixed left-0 top-0 w-[280px] lg:w-64 bg-white shadow-lg z-50 
+         lg:fixed lg:top-0 lg:left-0 lg:h-screen lg:translate-x-0 transition-transform duration-300 ease-in-out"
+  [ngClass]="{
+    '-translate-x-full': !isSidebarOpen && !isLargeScreen,
+    'translate-x-0': isSidebarOpen || isLargeScreen
+  }">
+  
+  <!-- Sidebar Header -->
+  <div class="p-4 border-b flex items-center space-x-2">
+    <div class="text-2xl font-bold text-blue-600">🚧</div>
+    <div class="text-xl font-semibold">StreetSnap</div>
+    <!-- <button 
+      *ngIf="!isLargeScreen" 
+      (click)="toggleSidebar()" 
+      class="ml-auto p-2 rounded-md text-gray-600 hover:bg-gray-100">
+      ✖️
+    </button> -->
+  </div>
+
+  <!-- Navigation Menu -->
+  <nav class="mt-4 flex flex-col h-[calc(100vh-80px)] overflow-y-auto">
+    <div class="flex-1">
+      <a 
+        routerLink="/explore-feed" 
+        routerLinkActive="bg-blue-50 text-blue-600" 
+        class="flex items-center px-4 py-3 text-gray-600 hover:bg-blue-50 transition-colors rounded-md"
+        (click)="onMobileItemClick()">
+        🌐 <span class="ml-3 text-sm sm:text-base">Explore</span>
+      </a>
+
+      <a 
+        routerLink="/create-post" 
+        routerLinkActive="bg-blue-50 text-blue-600" 
+        class="flex items-center px-4 py-3 text-gray-600 hover:bg-blue-50 transition-colors rounded-md"
+        (click)="onMobileItemClick()">
+        ➕ <span class="ml-3 text-sm sm:text-base">Create Post</span>
+      </a>
+
+      <a 
+        routerLink="/search-by-post" 
+        routerLinkActive="bg-blue-50 text-blue-600" 
+        class="flex items-center px-4 py-3 text-gray-600 hover:bg-blue-50 transition-colors rounded-md"
+        (click)="onMobileItemClick()">
+        📱 <span class="ml-3 text-sm sm:text-base">Search By Post</span>
+      </a>
+
+      <a 
+        routerLink="/search-by-location" 
+        routerLinkActive="bg-blue-50 text-blue-600" 
+        class="flex items-center px-4 py-3 text-gray-600 hover:bg-blue-50 transition-colors rounded-md"
+        (click)="onMobileItemClick()">
+        🗺️ <span class="ml-3 text-sm sm:text-base">Search By Coordinates</span>
+      </a>
+
+      <a 
+        routerLink="/dashboard" 
+        routerLinkActive="bg-blue-50 text-blue-600" 
+        class="flex items-center px-4 py-3 text-gray-600 hover:bg-blue-50 transition-colors rounded-md"
+        (click)="onMobileItemClick()">
+        📊 <span class="ml-3 text-sm sm:text-base">Dashboard</span>
+      </a>
+    </div>
+
+    <!-- Logout button at bottom -->
+    <div class="border-t p-4">
+      <button 
+        (click)="logout()" 
+        class="flex items-center w-full px-4 py-3 text-gray-600 hover:bg-blue-50 transition-colors rounded-md">
+        ↩️ <span class="ml-3 text-sm sm:text-base">Logout</span>
+      </button>
+    </div>
+  </nav>
+</aside>
+
+<!-- Dynamic Content -->
+<main class="flex-1 pt-[60px] lg:pt-0 lg:ml-64">
+  <!-- <router-outlet></router-outlet> -->
+</main>

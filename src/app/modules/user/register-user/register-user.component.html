@@ -1,0 +1,78 @@
+<div class="flex items-center justify-center min-h-screen bg-gradient-to-br from-sky-400 via-teal-400 to-green-500">
+    <div class="w-full max-w-sm bg-white bg-opacity-90 backdrop-blur-lg rounded-lg shadow-xl p-4 sm:p-6">
+      <h2 class="text-2xl font-bold text-center text-gray-800 mb-4 sm:mb-5">Join StreetSnap</h2>
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-4 sm:space-y-5">
+        <!-- Name Field -->
+        <div>
+          <label for="username" class="block text-xs sm:text-sm font-medium text-gray-700">Username</label>
+          <input
+            id="username"
+            type="text"
+            formControlName="username"
+            placeholder="Enter your name"
+            class="mt-1 block w-full px-3 py-1 bg-gray-50 border border-gray-300 rounded-md shadow-sm text-gray-800 outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+          />
+          <div *ngIf="registerForm.get('username')?.touched && registerForm.get('username')?.invalid" class="text-xs text-red-500 mt-1">
+            <div *ngIf="registerForm.get('username')?.errors?.['required']">Username is required.</div>
+            <div *ngIf="registerForm.get('username')?.errors?.['minlength']">Username must be at least 2 characters.</div>
+          </div>
+        </div>
+  
+        <!-- Email Field -->
+        <div>
+          <label for="email" class="block text-xs sm:text-sm font-medium text-gray-700">Email</label>
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            placeholder="Enter your email"
+            class="mt-1 block w-full px-3 py-1 bg-gray-50 border border-gray-300 rounded-md shadow-sm text-gray-800 outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+          />
+          <div *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid" class="text-xs text-red-500 mt-1">
+            <div *ngIf="registerForm.get('email')?.errors?.['required']">Email is required.</div>
+            <div *ngIf="registerForm.get('email')?.errors?.['email']">Enter a valid email address.</div>
+          </div>
+        </div>
+  
+        <!-- Password Field -->
+        <div>
+          <label for="password" class="block text-xs sm:text-sm font-medium text-gray-700">Password</label>
+          <input
+            id="password"
+            type="password"
+            formControlName="password"
+            placeholder="Enter your password"
+            class="mt-1 block w-full px-3 py-1 bg-gray-50 border border-gray-300 rounded-md shadow-sm text-gray-800 outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+          />
+          <div *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid" class="text-xs text-red-500 mt-1">
+            <div *ngIf="registerForm.get('password')?.errors?.['required']">Password is required.</div>
+            <div *ngIf="registerForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters.</div>
+          </div>
+        </div>
+  
+        <!-- Submit Button -->
+        <div>
+          <button
+            type="submit"
+            [disabled]="registerForm.invalid"
+            class="w-full px-3 py-2 text-sm font-bold text-white rounded-md shadow-md bg-gradient-to-r from-teal-400 via-green-500 to-teal-600 hover:from-teal-500 hover:to-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500"
+          >
+            Register
+          </button>
+        </div>
+      </form>
+      <p class="mt-4 text-center text-xs sm:text-sm text-gray-600">
+        Already have an account? 
+        <a routerLink="/login" class="text-teal-500 hover:underline">Login here</a>
+      </p>
+    </div>
+  </div>
+  
+  @for (item of userList; track $index) {
+    <div class="text-center">
+      <ul>
+          <li> {{item.name | titlecase}} || {{item.email | lowercase}}</li>
+      </ul>
+    </div>
+  }
+  

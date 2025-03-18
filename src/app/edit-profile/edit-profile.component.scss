@@ -1,0 +1,12 @@
+.main-div {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 1rem;
+}
+
+@media (max-width: 640px) {
+    .main-div {
+        padding: 0.5rem;
+    }
+}

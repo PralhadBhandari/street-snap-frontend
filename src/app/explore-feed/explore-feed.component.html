@@ -1,0 +1,151 @@
+<!-- Container div with responsive margins and width -->
+<div class="main-div ml-[20vw] m-0">
+  <!-- Responsive grid container -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4">
+    <!-- Post card with responsive width -->
+    <div *ngFor="let post of mergedPosts; let i = index"
+         class="flex flex-col bg-white rounded-lg shadow-md border border-gray-300 
+                transition-all transform hover:shadow-xl w-full">
+      
+      <!-- Post Header - Responsive spacing -->
+      <div class="flex items-center p-2 sm:p-3">
+        <img [src]="post?.userProfilePhoto"
+             class="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover mr-2 sm:mr-3"
+             alt="User avatar"/>
+        <span class="font-medium text-sm sm:text-base">{{ post?.username }}</span>
+        <button class="ml-auto p-1 sm:p-2">
+          <svg class="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <!-- SVG path remains the same -->
+          </svg>
+        </button>
+      </div>
+
+      <!-- Post Media - Maintain aspect ratio -->
+      <div class="relative w-full pt-[100%] bg-gray-100 border border-gray-200">
+        <img [src]="post?.postMedia || 'https://via.placeholder.com/150'"
+             class="absolute inset-0 w-full h-full object-cover"
+             alt="Post image"/>
+      </div>
+
+      <!-- Post Actions - Responsive spacing -->
+      <div class="flex items-center p-2 sm:p-3">
+        <div class="flex space-x-4">
+          <!-- <button class="text-sm sm:text-base">❤️ {{ post?.likes?.length }}</button> -->
+          <div class="like-section">
+            <button (click)="toggleLike(post)">
+              <!-- <span *ngIf="post?.likes.includes(loggedInUserId)">Unlike</span> -->
+              <span *ngIf="!post?.likes.includes(loggedInUserId)">❤️</span>
+            </button>
+            <span>{{ post?.likes?.length }} </span>
+          </div>
+        
+          <button class="text-sm sm:text-base" (click)="toggleComment(post)">
+            💬 {{ post?.comments?.length }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Caption - Responsive text size -->
+      <div class="px-2 sm:px-3 pb-2">
+        <p class="text-xs sm:text-sm">{{ post?.caption }}</p>
+      </div>
+
+      <!-- Comments Section - Responsive positioning and size -->
+      <div *ngIf="post.showComments"
+           class="fixed inset-x-0 bottom-0 h-[70%] sm:h-[70vh] 
+                  lg:absolute lg:h-[70%] lg:w-full 
+                  bg-white shadow-lg rounded-t-lg lg:rounded-lg 
+                  overflow-hidden z-50">
+        
+        <!-- Comments Header -->
+        <div class="sticky top-0 bg-white border-b p-3 flex justify-between items-center">
+          <span class="text-base sm:text-lg font-semibold">Comments</span>
+          <button (click)="closeComments(post)"
+                  class="text-gray-500 hover:text-gray-700">⛌</button>
+        </div>
+
+        <!-- Comments List - Scrollable area -->
+        <div class="overflow-y-auto h-[calc(100%-120px)] p-3 space-y-4">
+          <!-- No Comments Message -->
+          <div *ngIf="post.comments.length === 0"
+               class="flex items-center justify-center h-full">
+            <p class="text-gray-500">No comments to display</p>
+          </div>
+
+          <!-- Comments with Replies -->
+          <div *ngFor="let comment of post.comments; let ci = index" 
+               class="space-y-2">
+            <!-- Comment content -->
+            <div class="flex space-x-2">
+              <img src="https://via.placeholder.com/40"
+                   class="w-6 h-6 sm:w-8 sm:h-8 rounded-full"
+                   alt="User Avatar"/>
+              <div class="flex-1">
+                <p class="text-sm font-medium">{{ comment?.user?.username }}</p>
+                <p class="text-xs sm:text-sm text-gray-600">{{ comment?.text }}</p>
+              </div>
+              <button (click)="toggleCommentOptions(post, ci)" 
+                      class="text-gray-500">...</button>
+            </div>
+
+            <!-- Comment Options Dropdown -->
+            <div *ngIf="comment.showOptions"
+                 class="absolute right-8 bg-white shadow-md rounded-md p-2 z-50">
+              <!-- Options buttons remain the same -->
+            </div>
+
+            <!-- Replies Section -->
+            <div class="ml-8 space-y-2">
+              <!-- Replies list -->
+              <div *ngFor="let reply of comment.replies; let ri = index"
+                   class="flex items-start space-x-2">
+                <!-- Reply content -->
+                <div class="flex-1">
+                  <p class="text-xs font-medium">{{ reply?.user?.username }}</p>
+                  <p class="text-xs text-gray-500">{{ reply?.text }}</p>
+                </div>
+                <!-- Reply options button -->
+                <button (click)="toggleReplyOptions(comment, ri)"
+                        class="text-gray-500">...</button>
+              </div>
+
+              <!-- Reply Input -->
+              <div class="flex items-center space-x-2 mt-2 mb-2">
+                <textarea [(ngModel)]="replyInput"
+                          placeholder="Write a reply..."
+                          class="flex-1 resize-none text-xs sm:text-sm p-2 rounded-lg border focus:outline-none focus:ring-1 focus:ring-blue-500"></textarea>
+                <button (click)="addReply(post, comment)"
+                        class="text-blue-500 hover:text-blue-600">➤</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Comment Input Section -->
+        <div class="absolute bottom-0 left-0 right-0 border-t bg-white p-2">
+          <div class="flex space-x-2">
+            <textarea [(ngModel)]="commentInput"
+                      placeholder="Write a comment..."
+                      class="flex-1 resize-none text-sm p-2 rounded-lg border focus:outline-none focus:ring-1 focus:ring-blue-500"></textarea>
+            <button (click)="postComment(post._id)"
+                    class="text-blue-500 hover:text-blue-600 text-xl">➤</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Updated View in Map button with improved styling and positioning -->
+      <div class="px-3 pb-3 mt-auto flex justify-center">
+        <button 
+          (click)="generateMap(post)" 
+          class="w-auto bg-indigo-500 text-white px-4 py-1.5 rounded-md
+                 hover:bg-indigo-600 transition-colors duration-200
+                 flex items-center justify-center gap-1.5 text-xs font-medium
+                 shadow-sm hover:shadow"
+        >
+          <i class="fas fa-map-marker-alt text-xs"></i>
+          View in Map
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

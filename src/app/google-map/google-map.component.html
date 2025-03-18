@@ -1,0 +1,80 @@
+<div class="container mx-auto p-6 bg-gray-100 border rounded-lg shadow-md">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Form Section -->
+      <div class="col-span-1 bg-white p-6 rounded-lg shadow-sm">
+        <h2 class="text-2xl font-semibold text-gray-700 mb-4">Search Location</h2>
+        <form [formGroup]="mapForm" (ngSubmit)="displayMarker()" class="space-y-4">
+          <!-- Latitude -->
+          <div>
+            <label for="lat" class="block text-sm font-medium text-gray-600">Latitude</label>
+            <input
+              id="lat"
+              type="text"
+              formControlName="lat"
+              placeholder="Enter latitude"
+              class="w-full px-4 py-2 mt-1 border rounded-lg focus:ring focus:ring-blue-200 focus:outline-none"
+            />
+          </div>
+  
+          <!-- Longitude -->
+          <div>
+            <label for="long" class="block text-sm font-medium text-gray-600">Longitude</label>
+            <input
+              id="long"
+              type="text"
+              formControlName="long"
+              placeholder="Enter longitude"
+              class="w-full px-4 py-2 mt-1 border rounded-lg focus:ring focus:ring-blue-200 focus:outline-none"
+            />
+          </div>
+  
+          <!-- Address -->
+          <div>
+            <label for="address" class="block text-sm font-medium text-gray-600">Address</label>
+            <input
+              #addressInput
+              id="addressInput"
+              type="text"
+              formControlName="address"
+              placeholder="Enter address"
+              class="w-full px-4 py-2 mt-1 border rounded-lg focus:ring focus:ring-blue-200 focus:outline-none"
+            />
+          </div>
+  
+          <!-- Image URL -->
+          <div>
+            <label for="image" class="block text-sm font-medium text-gray-600">Image URL</label>
+            <input
+              id="image"
+              type="text"
+              formControlName="image"
+              placeholder="Enter image URL"
+              class="w-full px-4 py-2 mt-1 border rounded-lg focus:ring focus:ring-blue-200 focus:outline-none"
+            />
+          </div>
+  
+          <!-- Submit Button -->
+          <button
+            type="submit"
+            class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200"
+            [disabled]="mapForm.invalid"
+          >
+            Search Map
+          </button>
+        </form>
+      </div>
+  
+      <!-- Map Section -->
+      <div class="col-span-1 md:col-span-2 flex flex-col justify-center items-center bg-white p-6 rounded-lg shadow-sm">
+        <div *ngIf="isSearched; else noSearch" class="w-full">
+          <div id="map" class="w-full h-[400px] rounded-lg border"></div>
+        </div>
+        <ng-template #noSearch>
+          <h2 class="text-center text-lg font-medium text-gray-500">
+            Please search something to display the map...
+          </h2>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+  

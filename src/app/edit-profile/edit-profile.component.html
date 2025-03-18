@@ -1,0 +1,77 @@
+<div class="h-screen bg-gray-100 flex items-center justify-center">
+  <div class="min-w-[70vw] max-w-full bg-white rounded-lg shadow-lg p-6 ml-[20vw] m-0">
+    <div class="flex items-center gap-4 mb-6">
+      <!-- Profile Image -->
+      <div class="relative">
+        <div class="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+          <!-- Display Profile Image or Placeholder -->
+          <img [src]="profileImageUrl || 'https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars-thumbnail.png'" alt="Profile" class="w-full h-full object-cover">
+        </div>
+        <!-- File Input for Profile Image -->
+        <label class="absolute bottom-1 right-1 bg-indigo-600 aspect-square w-8 rounded-full flex items-center justify-center cursor-pointer hover:bg-indigo-700 transition duration-200">
+          <i class="fas fa-camera text-white text-sm"></i>
+          <input type="file" class="hidden" (change)="onFileChange($event)" accept="image/*">
+        </label>
+      </div>
+      <!-- Header Text -->
+      <div>
+        <h2 class="text-xl font-semibold text-gray-800">{{ isUpdate ?'Edit Profile':'Create Profile'}}</h2>
+        <p class="text-sm text-gray-500">Update your personal information</p>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <form [formGroup]="userProfileForm" (ngSubmit)="onSubmit()" class="space-y-5">
+      <!-- Username Field -->
+      <div>
+        <label for="username" class="block text-sm font-medium text-gray-700 mb-2">Username</label>
+        <div class="relative">
+          <i class="fas fa-user absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+          <input
+            id="username"
+            type="text"
+            formControlName="username"
+            style="padding-left : 2.2rem !important"
+            class="pl-12 w-full px-4 py-2 text-sm bg-gray-50 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition outline-none"
+            [class.border-red-500]="f['username'].invalid && f['username'].touched"
+            placeholder="Enter your username">
+        </div>
+        <div *ngIf="f['username'].invalid && f['username'].touched" class="text-xs text-red-500 mt-1">
+          <div *ngIf="f['username'].errors?.['required']">Username is required.</div>
+          <div *ngIf="f['username'].errors?.['minlength']">Username must be at least 3 characters.</div>
+        </div>
+      </div>
+
+      <!-- Bio Field -->
+      <div>
+        <label for="bio" class="block text-sm font-medium text-gray-700">Bio</label>
+        <textarea
+          id="bio"
+          formControlName="bio"
+          class="w-full px-4 py-2 text-sm bg-gray-50 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 transition resize-none h-28 outline-none"
+          [class.border-red-500]="f['bio'].invalid && f['bio'].touched"
+          placeholder="Tell us about yourself..."></textarea>
+        <div *ngIf="f['bio'].invalid && f['bio'].touched" class="text-xs text-red-500 mt-1">
+          <div *ngIf="f['bio'].errors?.['required']">Bio is required.</div>
+          <div *ngIf="f['bio'].errors?.['maxlength']">Bio cannot exceed 200 characters.</div>
+        </div>
+        <p class="text-xs text-gray-400 mt-1">Maximum 200 characters</p>
+      </div>
+
+      <!-- Buttons -->
+      <div class="flex gap-4">
+        <button
+          type="submit"
+          [disabled]="userProfileForm.invalid"
+          class="flex-1 bg-indigo-600 text-white text-sm px-5 py-2.5 rounded-lg font-medium hover:bg-indigo-700 transition disabled:opacity-50 disabled:cursor-not-allowed">
+          <i class="fas fa-save mr-2"></i> {{ isUpdate ?'Save Changes ':'Create'}}
+        </button>
+        <button
+          type="button"
+          class="flex-1 bg-gray-200 text-gray-700 text-sm px-5 py-2.5 rounded-lg font-medium hover:bg-gray-300 transition">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,36 @@
+<div class="min-h-screen min-w-screen bg-gray-50 flex flex-col lg:flex-row relative">
+  <!-- Mobile Toggle Button -->
+  <button 
+    (click)="toggleSidebar()" 
+    class="lg:hidden fixed top-0 left-0 w-full p-4 bg-white shadow-md z-50 flex items-center justify-between"
+    aria-label="Toggle menu">
+    <span class="text-lg font-semibold text-gray-700">Menu</span>
+    <svg 
+      xmlns="http://www.w3.org/2000/svg" 
+      class="h-6 w-6 text-gray-600" 
+      fill="none" 
+      viewBox="0 0 24 24" 
+      stroke="currentColor">
+      <path 
+        *ngIf="!isSidebarOpen" 
+        stroke-linecap="round" 
+        stroke-linejoin="round" 
+        stroke-width="2" 
+        d="M4 6h16M4 12h16M4 18h16"/>
+      <path 
+        *ngIf="isSidebarOpen" 
+        stroke-linecap="round" 
+        stroke-linejoin="round" 
+        stroke-width="2" 
+        d="M6 18L18 6M6 6l12 12"/>
+    </svg>
+  </button>
+
+  <!-- Sidebar -->
+  <app-sidebar [isSidebarOpen]="isSidebarOpen"></app-sidebar>
+
+  <!-- Dynamic Content -->
+  <main class="flex-1 p-4 pt-[60px] lg:pt-0 lg:min-w-[80vw] ">
+    <router-outlet></router-outlet>
+  </main>
+</div>

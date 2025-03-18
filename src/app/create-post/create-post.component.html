@@ -1,0 +1,136 @@
+<!-- Mobile-first responsive container -->
+<div class="min-h-screen w-full p-4 lg:p-6 lg:ml-64 max-w-[77vw] ml-[20vw]">
+  <div class="w-full max-w-3xl mx-auto bg-white rounded-lg shadow-lg">
+    <form [formGroup]="postForm" (ngSubmit)="onSubmit()" class="flex flex-col h-full">
+      <!-- Header Section -->
+      <div class="p-4 border-b">
+        <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+          <!-- Title Section -->
+          <div class="flex-grow">
+            <h2 class="text-xl sm:text-2xl font-semibold text-indigo-800">
+              {{ isUpdate ? "Update Post" : "Create Post" }}
+            </h2>
+            <p class="text-xs text-gray-500">Share your thoughts with the world</p>
+          </div>
+
+          <!-- Media Upload Section -->
+          <div class="flex items-center gap-3">
+            <!-- Upload Button -->
+            <label class="inline-flex items-center px-3 py-2 bg-indigo-600 text-white text-sm rounded-md cursor-pointer hover:bg-indigo-700 transition duration-200">
+              <i class="fas fa-camera mr-1"></i>
+              <span class="hidden sm:inline">Upload</span>
+              <input #fileInput type="file" class="hidden" (change)="onFileChange($event)" accept="image/*, video/*">
+            </label>
+
+            <!-- Media Preview -->
+            <div class="relative">
+              <div class="w-16 sm:w-20 h-16 sm:h-20 rounded-md bg-gray-200 overflow-hidden">
+                <ng-container *ngIf="mediaPreview">
+                  <img *ngIf="isImage" [src]="mediaPreview" alt="Post Media" class="w-full h-full object-cover">
+                  <video *ngIf="isVideo" [src]="mediaPreview" class="w-full h-full object-cover" controls></video>
+                </ng-container>
+                <div *ngIf="!mediaPreview" class="w-full h-full flex items-center justify-center">
+                  <i class="fas fa-image text-gray-400 text-xl"></i>
+                </div>
+              </div>
+
+              <!-- Remove Media Button -->
+              <button *ngIf="mediaPreview" 
+                      type="button" 
+                      (click)="removeMedia()"
+                      class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center hover:bg-red-600 transition">
+                <i class="fas fa-times text-xs"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Content -->
+      <div class="p-4 space-y-4 flex-1 overflow-y-auto">
+        <!-- Location Fields -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- Latitude -->
+          <div class="flex flex-col">
+            <label for="latitude" class="text-sm font-medium text-gray-700 mb-1">Latitude</label>
+            <input
+              id="latitude"
+              type="number"
+              formControlName="latitude"
+              class="w-full px-3 py-2 text-sm bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition outline-none"
+              placeholder="Enter latitude">
+            <div *ngIf="f['latitude'].touched && f['latitude'].invalid" class="text-red-500 text-xs mt-1">
+              Latitude is required.
+            </div>
+          </div>
+
+          <!-- Longitude -->
+          <div class="flex flex-col">
+            <label for="longitude" class="text-sm font-medium text-gray-700 mb-1">Longitude</label>
+            <input
+              id="longitude"
+              type="number"
+              formControlName="longitude"
+              class="w-full px-3 py-2 text-sm bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition outline-none"
+              placeholder="Enter longitude">
+            <div *ngIf="f['longitude'].touched && f['longitude'].invalid" class="text-red-500 text-xs mt-1">
+              Longitude is required.
+            </div>
+          </div>
+        </div>
+
+        <!-- Location Button -->
+        <button type="button" 
+                (click)="useMyLocation()"
+                class="w-full sm:w-auto bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-700 transition">
+          <i class="fas fa-map-marker-alt mr-1"></i> Use My Location
+        </button>
+
+        <!-- Address Field -->
+        <div class="flex flex-col">
+          <label for="address" class="text-sm font-medium text-gray-700 mb-1">Address</label>
+          <input
+            id="address"
+            type="text"
+            formControlName="address"
+            class="w-full px-3 py-2 text-sm bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition outline-none"
+            placeholder="Enter the address">
+          <div *ngIf="f['address'].touched && f['address'].invalid" class="text-red-500 text-xs mt-1">
+            Address is required.
+          </div>
+        </div>
+
+        <!-- Caption Field -->
+        <div class="flex flex-col">
+          <label for="caption" class="text-sm font-medium text-gray-700 mb-1">Caption</label>
+          <textarea
+            id="caption"
+            formControlName="caption"
+            rows="4"
+            class="w-full px-3 py-2 text-sm bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition resize-none outline-none"
+            placeholder="Write your caption..."></textarea>
+          <div *ngIf="f['caption'].touched && f['caption'].invalid" class="text-red-500 text-xs mt-1">
+            Caption is required.
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="p-4 border-t">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <button
+            type="submit"
+            [disabled]="postForm.invalid"
+            class="w-full bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 transition disabled:opacity-50 disabled:cursor-not-allowed">
+            <i class="fas fa-save mr-1"></i> {{ isUpdate ? 'Update Post' : 'Add Post' }}
+          </button>
+          <button
+            type="button"
+            class="w-full bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-300 transition">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
